@@ -19,12 +19,17 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $product = [
-            'name' => $request->name,
-            
-        ];
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+        ]);
+
+        Product::create($request->all());
+
+        return redirect()->back()->with('success', 'ggwp');
     }
 
     /**
