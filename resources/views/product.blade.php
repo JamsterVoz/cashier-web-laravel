@@ -22,7 +22,7 @@
     </ul>
 @endif
 
-    <form action="/productCreate" method="post">
+    <form action="{{ route('productCreate') }}" method="post">
         @csrf
         <div>
             <input type="text" name="name" class="form-control" required>
@@ -34,6 +34,7 @@
             <input type="number" name="stock" class="form-control" required>
         </div>
 
+        {{-- <a href="{{ route('product.edit') }}">edit</a> --}}
         <button type="submit">submit</button>
     </form>
 </body>

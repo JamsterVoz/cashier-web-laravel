@@ -11,6 +11,11 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function dashboard()
+    {
+        return view('dashboard');
+    }
+
     public function index()
     {
         return view('product');
@@ -29,7 +34,7 @@ class ProductController extends Controller
 
         Product::create($request->all());
 
-        return redirect()->back()->with('success', 'ggwp');
+        return redirect()->back()->with('success', 'Success Create Product!');
     }
 
     /**
@@ -53,7 +58,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('product.edit', compact('id'));
     }
 
     /**
@@ -61,7 +66,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+        ]);
+
+        Product::create($request->all());
     }
 
     /**

@@ -15,12 +15,11 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/dashboard', [ProductController::class])->name('dashboard');
 
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::get('/loginProcess', [UserController::class, 'login'])->name('loginProcess');
 
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 Route::post('/productCreate', [ProductController::class, 'create'])->name('productCreate');
+Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit.{id}');
