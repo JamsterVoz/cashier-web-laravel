@@ -12,7 +12,7 @@ class RoleSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
         $data = [
             'admin', 'employee'
