@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    
+@extends('layouts.layout')
+
+@section('content')
     @foreach ($product as $item)
     <form action="{{ route('update',$item->id) }}" method="post">
         @csrf   
+    <div class="form-group">
         <div>
             <input type="text" name="name" class="form-control" value="{{$item->name}}" required>
         </div>
@@ -23,7 +17,6 @@
 
         <button type="submit">submit</button>
     </form>
+    </div>
     @endforeach
-
-</body>
-</html>
+@endsection
