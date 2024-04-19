@@ -34,8 +34,8 @@
             <input type="number" name="stock" class="form-control" required>
         </div>
 
-        {{-- <a href="{{ route('product.edit') }}">edit</a> --}}
         <button type="submit">submit</button>
+        <a href="{{ route('productview') }}">back</a>
     </form>
 </body>
 </html>

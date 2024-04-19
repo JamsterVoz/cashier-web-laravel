@@ -15,11 +15,16 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::get('/dashboard', [ProductController::class])->name('dashboard');
+
+
+Route::get('/productview', [ProductController::class, 'productview'])->name('productview');
 
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::get('/loginProcess', [UserController::class, 'login'])->name('loginProcess');
 
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 Route::post('/productCreate', [ProductController::class, 'create'])->name('productCreate');
-Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit.{id}');
+Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('update');
+Route::get('/product/delete/{id}', [ProductController::class, 'destroy'])->name('delete');
+

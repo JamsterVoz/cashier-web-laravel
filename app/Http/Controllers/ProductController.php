@@ -11,9 +11,10 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function dashboard()
+    public function productview()
     {
-        return view('dashboard');
+        $product = Product::all();
+        return view('productview', compact('product'));
     }
 
     public function index()
@@ -56,30 +57,30 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(Product $product, $id)
     {
-        return view('product.edit', compact('id'));
+        $product = Product::select('*')->where('id', $id)->get();
+
+        return view('edit', ['product' => $product]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'price' => 'required',
-            'stock' => 'required',
-        ]);
+        $product = Product::findOrFail($id);
+        $product->update($request->all());
 
-        Product::create($request->all());
+        return redirect()->route('productview');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product, $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $product->delete();
     }
 }
