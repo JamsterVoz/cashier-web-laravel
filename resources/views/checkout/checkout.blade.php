@@ -11,4 +11,13 @@
         @endforeach
     </select>
 </form>
+
+<form action="{{ route('transaction',$receipt->id) }}" method="post">
+    @csrf
+    @method("PATCH")
+    <input type="text" name="customer">
+    <button type="submit">
+        Submit
+    </button>
+</form>
 @endsection

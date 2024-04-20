@@ -37,6 +37,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::post('/checkout', [SalesController::class, 'create'])->name('checkout');
 Route::get('/sales', [DetailSalesController::class, 'index'])->name('sales');
+Route::patch('/transaction/{id}', [DetailSalesController::class, 'create'])->name('transaction');
 
 Route::get('/productview', [ProductController::class, 'productview'])->name('productview');
 Route::get('/product', [ProductController::class, 'index'])->name('product');

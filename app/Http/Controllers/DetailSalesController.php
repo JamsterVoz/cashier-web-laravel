@@ -36,7 +36,7 @@ class DetailSalesController extends Controller
             ]);
 
             $receipt = DetailSales::where('status', 'Undone')->first();
-            return view('sales.sale', compact('product', 'checkout', 'sub_total', 'receipt'));
+            return view('sales.sales', compact('product', 'checkout', 'sub_total', 'receipt'));
         }
     }
 
@@ -46,16 +46,16 @@ class DetailSalesController extends Controller
     public function create(Request $request, $id)
     {
         $data = [
-            'nama_pembeli' => 'required'
+            'customer' => 'required'
         ];
 
         $validate = $request->validate($data);
-        $total_harga = Sale::where('status', 'Undone')->sum('total_harga');
-        $nama_pembeli = $request->nama_pembeli;
+        $sub_total = Sale::where('status', 'Undone')->sum('total_price');
+        $customer = $request->customer;
         
         DetailSales::where('id', $id)->update([
-            'customer' => $nama_pembeli,
-            'total_harga' => $total_harga,
+            'customer' => $customer,
+            'sub_total' => $sub_total,
             'status' => 'Done'
         ]);
 
@@ -80,7 +80,7 @@ class DetailSalesController extends Controller
             }
         }
         //
-        return redirect()->route('receipt-detail', $id);
+        return redirect()->route('sales', $id);
     }
 
     /**
