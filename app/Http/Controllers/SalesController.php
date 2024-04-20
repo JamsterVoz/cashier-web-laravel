@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sale;
 use App\Models\sales;
-use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class SalesController extends Controller
 {
@@ -13,15 +15,34 @@ class SalesController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $id = $request->product_id;
+        $stock = Product::select('stock')->where('id', $id)->first();
+        $harga = Product::select('id', 'price')->where('id','=', $id)->first();
+
+        if (Sale::where('status', 'Undone')->where('product_id', $id)->exists()){
+            return redirect()->route('sales');
+        }else{
+            if ($stock->stock < 1){
+                return redirect()->route('sales');
+            }else{
+                $validateData = Sale::create([
+                    'receipt_id' => $request->receipt_id,
+                    'product_id' => $id,
+                    'total_price' => $harga->price,
+                ]);
+        
+                // User::create($validateData);
+                return redirect()->route('sales');
+            }
+        }
     }
 
     /**

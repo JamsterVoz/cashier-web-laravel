@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('detail_sales', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sale_id');
-            $table->unsignedBigInteger('product_id');
-            $table->integer('amount');
-            $table->decimal('sub_total',8,2);
+            $table->string('customer')->nullable();
+            $table->decimal('sub_total',8,2)->nullable();
+            $table->enum('status', ['Done', 'Undone'])->default('Undone');
             $table->timestamps();
         });
     }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\detail_sales;
-use App\Http\Controllers\Controller;
+use App\Models\Sale;
+use App\Models\Product;
+use App\Models\DetailSales;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DetailSalesController extends Controller
 {
@@ -13,15 +15,72 @@ class DetailSalesController extends Controller
      */
     public function index()
     {
-        //
+        $product = Product::all();
+
+        // Mengambil data barang yang sedang diproses atau belum di beli, baru dimasukan ke keranjang
+        $checkout = DetailSales::where('status', 'Undone')->get();
+        // Menjumlahkan semua harga produk yang ada di keranjang
+        $sub_total = Sale::where('status', 'Undone')->sum('total_price');
+        // Mengambil id untuk relasi dari detail penjualan ke penjualan
+        $receipt = DetailSales::where('status', 'Undone')->first();
+
+        if($receipt){
+            return view('checkout.checkout', compact('product', 'checkout', 'sub_total', 'receipt'));
+        }
+        else{
+            // Membuat data kosong sebagai Relasi dari detail ke penjualan
+            DetailSales::create([
+                'customer' => null,
+                'sub_total' => null,
+                'status',
+            ]);
+
+            $receipt = DetailSales::where('status', 'Undone')->first();
+            return view('sales.sale', compact('product', 'checkout', 'sub_total', 'receipt'));
+        }
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request, $id)
     {
+        $data = [
+            'nama_pembeli' => 'required'
+        ];
+
+        $validate = $request->validate($data);
+        $total_harga = Sale::where('status', 'Undone')->sum('total_harga');
+        $nama_pembeli = $request->nama_pembeli;
+        
+        DetailSales::where('id', $id)->update([
+            'customer' => $nama_pembeli,
+            'total_harga' => $total_harga,
+            'status' => 'Done'
+        ]);
+
+        Sale::where('receipt_id', $id)->update([
+            'status' => 'Done'
+        ]);
+
+
+        // Mengurangi stok produk
+        $test = Sale::where('receipt_id', $id)->get();
+
+        foreach ($test as $t)
+        {
+            $value = Product::where('id', $t->produk_id)->get();
+            foreach ($value as $v) {
+                $hasil = $v->stok_produk - $t->quantity_produk;
+
+                Product::where('id', $t->produk_id)->update([
+                    'stock' => $hasil
+                ]);
+                echo $hasil;
+            }
+        }
         //
+        return redirect()->route('receipt-detail', $id);
     }
 
     /**

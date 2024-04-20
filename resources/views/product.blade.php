@@ -17,7 +17,7 @@
     </ul>
 @endif
 
-    <form action="{{ route('productCreate') }}" method="post">
+    <form action="{{ route('productCreate') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div>
             <input type="text" name="name" class="form-control" required>
@@ -27,6 +27,9 @@
         </div>
         <div>
             <input type="number" name="stock" class="form-control" required>
+        </div>
+        <div>
+            <input type="file" name="image" class="form-control" required>
         </div>
 
         <button type="submit">submit</button>

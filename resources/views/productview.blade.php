@@ -9,6 +9,7 @@
       <thead>
       <tr>
         <th scope="col">No</th>
+        <th scope="col">Foto</th>
         <th scope="col">Name</th>
         <th scope="col">Price</th>
         <th scope="col">Stock</th>
@@ -21,6 +22,7 @@
     <tbody>
       <tr>
         <th scope="row">{{ $item->id }}</th>
+        <td><img src="{{ asset('image/'.$item->image) }}" alt="" style="max-width: 150px"></td>
         <td>{{ $item->name }}</td>
         <td>{{ $item->price }}</td>
         <td>{{ $item->stock }}</td>

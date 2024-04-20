@@ -11,54 +11,52 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
 
-    public function login()
-    {
-        if (Auth::check()){
-            return redirect()->route('productview');
-        }else{
-            return view('auth.login');
-        }
-    }
+    // public function login()
+    // {
+    //     if (Auth::check()){
+    //         return redirect()->route('productview');
+    //     }else{
+    //         return view('auth.login');
+    //     }
+    // }
 
     public function loginProcess(Request $request)
     {
         $credentials = $request->validate([
-            'username' => ['required'],
+            'name' => ['required'],
             'email' => ['required'],
             'password' => ['required'],
         ]); 
 
-        if (Auth::attempt($credentials)) {
-            // cek status user
-            if(Auth::user()->status != 'active'){
-                Auth::logout();
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-                
-                
-                return redirect('auth.login');
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+                return redirect()->route('productview');
+            } else {
+                return back();
             }
-        }
     }
 
-    public function register(Request $request)
-    {
-        return view('auth.register');
-    }
+    // public function register()
+    // {
+    //     return view('auth.register');
+    // }
 
-    public function registerProcess(Request $request)
-    {
-        $validated = $request->validate([
-            'username' => 'required|unique:users|max:255',
-            'email' => 'required|unique|max:255',
-            'password' => 'required|max:255',
-        ]);
+    // public function registerProcess(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required',
+    //         'email' => 'required|unique',
+    //         'password' => 'required|max:255',
+    //     ]);
 
-        $request['password'] = Hash::make($request->password);
-        $user = User::create($request->all());
+    //     User::create([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => Hash::make($request->password),
+    //     ]);
 
-        return redirect('login');
-    }
+    //     return redirect()->route('login')->with('success', "Success");
+    // }
 
     public function logout(Request $request)
     {
