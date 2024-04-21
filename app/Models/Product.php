@@ -11,7 +11,7 @@ class Product extends Model
     protected $table = 'products';
     protected $guarded = ['id'];
 
-    // public function checkout() {
-    //     return $this->hasMany(Sale::class, 'produk_id');
-    // }
+    public function checkout() {
+        return $this->hasMany(Sale::class, 'product_id');
+    }
 }

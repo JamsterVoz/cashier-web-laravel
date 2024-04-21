@@ -15,29 +15,9 @@ class DetailSalesController extends Controller
      */
     public function index()
     {
-        $product = Product::all();
+       $data = DetailSales::all();
 
-        // Mengambil data barang yang sedang diproses atau belum di beli, baru dimasukan ke keranjang
-        $checkout = DetailSales::where('status', 'Undone')->get();
-        // Menjumlahkan semua harga produk yang ada di keranjang
-        $sub_total = Sale::where('status', 'Undone')->sum('total_price');
-        // Mengambil id untuk relasi dari detail penjualan ke penjualan
-        $receipt = DetailSales::where('status', 'Undone')->first();
-
-        if($receipt){
-            return view('checkout.checkout', compact('product', 'checkout', 'sub_total', 'receipt'));
-        }
-        else{
-            // Membuat data kosong sebagai Relasi dari detail ke penjualan
-            DetailSales::create([
-                'customer' => null,
-                'sub_total' => null,
-                'status',
-            ]);
-
-            $receipt = DetailSales::where('status', 'Undone')->first();
-            return view('sales.sales', compact('product', 'checkout', 'sub_total', 'receipt'));
-        }
+       return view('');
     }
 
     /**
@@ -69,11 +49,11 @@ class DetailSalesController extends Controller
 
         foreach ($test as $t)
         {
-            $value = Product::where('id', $t->produk_id)->get();
+            $value = Product::where('id', $t->product_id)->get();
             foreach ($value as $v) {
-                $hasil = $v->stok_produk - $t->quantity_produk;
+                $hasil = $v->stock - $t->stock_quantity;
 
-                Product::where('id', $t->produk_id)->update([
+                Product::where('id', $t->product_id)->update([
                     'stock' => $hasil
                 ]);
                 echo $hasil;

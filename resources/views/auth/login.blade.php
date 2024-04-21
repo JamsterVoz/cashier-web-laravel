@@ -39,9 +39,6 @@
                 Submit
             </button>
         </div>
-        <a href="{{ url('register') }}">
-            Sign Up
-        </a>
     </form>
     </main>
 </div>

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->bigInteger('receipt_id');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
+            $table->bigInteger('stock_quantity')->default(1);
             $table->decimal('total_price',8,2);
             $table->enum('status', ['Done', 'Undone'])->default('Undone');
             $table->timestamps();

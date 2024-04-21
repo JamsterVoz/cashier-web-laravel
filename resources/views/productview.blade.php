@@ -1,9 +1,17 @@
 @extends('layouts.layout')
 
 @section('content')
-  <a href="{{ route('product') }}">
-    create
-  </a>
+  <div>
+    <a href="{{ route('product') }}">
+      create
+    </a>
+  </div>
+  <div>
+    <a href="{{ route('sales') }}">
+      checkout
+    </a>
+  </div>
+  
   <div class="container d-flex justify-content-center align-items-center">
     <table class="table table-bordered">
       <thead>

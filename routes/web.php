@@ -18,34 +18,37 @@ use App\Http\Controllers\SalesController;
 |
 */
 
-Route::group(['middleware' => 'isGuest'], function(){
-    Route::redirect('/','/login');
+Route::middleware(['guest'])-> group( function(){
+    Route::view('/login', 'auth.login')->name('login');
+    Route::post('/loginProcess', [AuthController::class, 'loginProcess'])->name('loginProcess');
 });
 
+Route::redirect('/','/login');
 
 // Route::get('/test', [ProductController::class,'test']);
 
-Route::view('/login', 'login')->name('login')->middleware('isGuest');
-Route::post('/loginProcess', [AuthController::class, 'loginProcess'])->name('loginProcess');
+
 // Route::get('/register', [AuthController::class, 'register'])->name('register');
 // Route::post('/registerProcess', [AuthController::class, 'registerProcess'])->name('registerProcess');
 
 
-Route::group(['middleware' => 'isLogin'], function() {
 
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::middleware(['auth'])-> group( function(){
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::post('/checkout', [SalesController::class, 'create'])->name('checkout');
-Route::get('/sales', [DetailSalesController::class, 'index'])->name('sales');
-Route::patch('/transaction/{id}', [DetailSalesController::class, 'create'])->name('transaction');
+    Route::post('/checkout', [SalesController::class, 'create'])->name('checkout');
+    Route::get('/sales', [SalesController::class, 'index'])->name('sales');
+    Route::patch('/quantity/{id}', [SalesController::class, 'store'])->name('quantity');
+    Route::delete('/delete/sales/{id}', [SalesController::class, 'destroy'])->name('deleteSales');
 
-Route::get('/productview', [ProductController::class, 'productview'])->name('productview');
-Route::get('/product', [ProductController::class, 'index'])->name('product');
-Route::post('/productCreate', [ProductController::class, 'create'])->name('productCreate');
-Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
-Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('update');
-Route::get('/product/delete/{id}', [ProductController::class, 'destroy'])->name('delete');
+    Route::patch('/transaction/{id}', [DetailSalesController::class, 'create'])->name('transaction');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+    Route::get('/product', [ProductController::class, 'index'])->name('product');
+    Route::post('/productCreate', [ProductController::class, 'create'])->name('productCreate');
+    Route::get('/productview', [ProductController::class, 'productview'])->name('productview');
+    Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+    Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('update');
+    Route::delete('/product/delete/{id}', [ProductController::class, 'destroy'])->name('delete');
+    
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
