@@ -36,7 +36,11 @@
         <td>{{ $item->stock }}</td>
         <td>
           <a href="{{ url('product/edit/'.$item->id) }}" class="btn btn-primary">Edit Product</a>
-          <a href="{{ url('product/delete/'.$item->id) }}" class="btn btn-danger">Delete</a>
+          <form action="{{ url('product/delete/'.$item->id) }}"  method="post">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-danger" type="submit">Delete</button>
+          </form>
         </td>
       </tr>
 

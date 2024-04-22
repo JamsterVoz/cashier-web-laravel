@@ -42,6 +42,12 @@ Route::middleware(['auth'])-> group( function(){
     Route::delete('/delete/sales/{id}', [SalesController::class, 'destroy'])->name('deleteSales');
 
     Route::patch('/transaction/{id}', [DetailSalesController::class, 'create'])->name('transaction');
+    Route::get('/receiptDetail/{id}', [DetailSalesController::class, 'receiptDetail'])->name('receiptDetail');
+    Route::get('/receiptList', [DetailSalesController::class, 'index'])->name('receiptList');
+
+    // Route::patch('/func-receipt/{id}', [ReceiptController::class, 'create'])->name('func-receipt');
+    // Route::delete('/func-receipt-delete/{id}', [ReceiptController::class, 'destroy'])->name('func-receipt-delete');
+    // Route::get('/func-receipt-pdf/{id}', [ReceiptController::class, 'cetak_receipt'])->name('func-receipt-pdf');
 
     Route::get('/product', [ProductController::class, 'index'])->name('product');
     Route::post('/productCreate', [ProductController::class, 'create'])->name('productCreate');

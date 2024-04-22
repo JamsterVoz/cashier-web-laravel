@@ -4,22 +4,21 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class isGuest
+class CekRole
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, ...$role): Response
     {
-        if (Auth::check()) {
+        if (in_array($request->user()->role, $role)) {
             return $next($request);
+        } else {
+            return redirect()->back();
         }
-
-        return redirect('login')->withErrors(['failed' => 'Invalid username & password']);
     }
 }

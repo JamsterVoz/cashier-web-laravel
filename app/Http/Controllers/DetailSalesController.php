@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Models\Sale;
 use App\Models\Product;
 use App\Models\DetailSales;
@@ -17,7 +18,16 @@ class DetailSalesController extends Controller
     {
        $data = DetailSales::all();
 
-       return view('');
+       return view('receipt.list', compact('data'));
+    }
+
+    public function receiptDetail($id)
+    {
+        $data = DetailSales::where('id', $id)->first();
+        $data_product = Sale::where('receipt_id', $id)->get();
+        $total_sales = $data_product->sum('total_price');
+        // dd($data);
+        return view('receipt.detail', compact('data', 'data_product', 'total_sales'));
     }
 
     /**
@@ -36,7 +46,7 @@ class DetailSalesController extends Controller
         DetailSales::where('id', $id)->update([
             'customer' => $customer,
             'sub_total' => $sub_total,
-            'status' => 'Done'
+            'status' => 'Done'  
         ]);
 
         Sale::where('receipt_id', $id)->update([
@@ -60,9 +70,20 @@ class DetailSalesController extends Controller
             }
         }
         //
-        return redirect()->route('sales', $id);
+        return redirect()->route('receiptDetail', $id);
     }
 
+    public function printReceipt($id)
+    {
+        $data = DetailSales::where('id', $id)->first();
+        $data_product = Sale::where('receipt_id', $id)->get();
+        $total_harga_keseluruhan = $data_product->sum('total_harga');
+
+    	$pdf = PDF::loadview('receipt.receipt-pdf', compact('data', 'data_prod$data_product', 'total_harga_keseluruhan'));
+        // return view('receipt-pdf', compact('data', 'produk_data', 'total_harga_keseluruhan'));
+        // return $pdf->stream();
+    	return $pdf->download('receipt.pdf');
+    }
     /**
      * Store a newly created resource in storage.
      */

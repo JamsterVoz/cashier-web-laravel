@@ -16,11 +16,11 @@ class isLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // if(Auth::check())
-        // {
-        //     return redirect('sales')->with('success', "Success");
-        // }
+        if(Auth::check()){
+            return $next($request);
+        }else{
+            return redirect('sales')->with('success', "Success");
+        }
 
-        // return $next($request);
     }
 }

@@ -29,17 +29,17 @@
                                     @foreach ($data as $dt)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $dt['nama_pembeli'] ? $dt['nama_pembeli'] : 'Null' }}</td>
-                                            <td>Rp {{ number_format($dt['total_harga'], 2, ',', '.') }}</td>
+                                            <td>{{ $dt['customer'] ? $dt['customer'] : 'Null' }}</td>
+                                            <td>Rp {{ number_format($dt['sub_total'], 2, ',', '.') }}</td>
                                             <td>{{ $dt['status'] }}</td>
                                             <td class="">
                                                 <div class="d-flex">
-                                                    <a href="{{ Route('receipt-detail', $dt->id) }}" class="btn btn-warning me-1 {{ $dt->status == 'Undone' ? 'disabled' : '' }}"><i data-feather="eye"></i></a>
-                                                    <form action="{{ Route('func-receipt-delete', $dt->id) }}" method="POST" class="m-0">
+                                                    <a href="{{ Route('receiptDetail', $dt->id) }}" class="btn btn-warning me-1 {{ $dt->status == 'Undone' ? 'disabled' : '' }}"><i data-feather="eye"></i></a>
+                                                    {{-- <form action="{{ Route('func-receipt-delete', $dt->id) }}" method="POST" class="m-0">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button class="btn btn-danger" type="submit">Delete</button>
-                                                    </form>
+                                                    </form> --}}
                                                 </div>
                                             </td>
                                         </tr>

@@ -39,8 +39,8 @@
                         @method('PATCH')
                         <div class="input-group quantity-input">
                             <input type="number" class="form-control text-center"
-                                name="product_quantity"
-                                value="{{ $item->product_quantity }}" min="1" max="{{ $item->product->product_quantity }}"
+                                name="stock_quantity"
+                                value="{{ $item->stock_quantity }}" min="1" max="{{ $item->product->stock_quantity }}"
                                 onkeyup="enforceMinMax(this)" onchange="this.form.submit()" />
                         </div>
                     </form>

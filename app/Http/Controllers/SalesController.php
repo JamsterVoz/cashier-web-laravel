@@ -51,7 +51,7 @@ class SalesController extends Controller
         $id = $request->product_id;
         $stock = Product::select('stock')->where('id', $id)->first();
         $harga = Product::select('id', 'price')->where('id','=', $id)->first();
-
+        
         if (Sale::where('status', 'Undone')->where('product_id', $id)->exists()){
             return redirect()->route('sales');
         }else{
